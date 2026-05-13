@@ -8,14 +8,7 @@ import Base from '../layouts/Base.astro';
   keywords={['Limo Tinted Sun', 'Ajay Malghan music', 'Bandcamp']}
 >
   <section class="music">
-    <h1 class="display music__h">Music</h1>
-
-    <div class="prose music__intro">
-      <p>
-        I've been a practicing musician since the age of six. I'm one half of
-        <a href="https://limotintedsun.bandcamp.com" target="_blank" rel="noopener">Limo Tinted Sun</a>.
-      </p>
-    </div>
+    <h1 class="visually-hidden">Music</h1>
 
     <div class="music__embed">
       <iframe
@@ -52,13 +45,13 @@ import Base from '../layouts/Base.astro';
     margin: 0 auto;
     padding: clamp(2.5rem, 5vw, 4rem) var(--page-x);
   }
-  .music__h {
-    font-size: var(--t-6);
-    margin-bottom: 1.5rem;
-    font-weight: 400;
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0,0,0,0); white-space: nowrap; border: 0;
   }
-  .music__intro { margin-bottom: 2.5rem; }
   .music__embed { margin-top: 1.5rem; }
+  .music__embed:first-of-type { margin-top: 0; }
   .music__note {
     margin-top: 1rem;
     font-family: var(--font-body);
