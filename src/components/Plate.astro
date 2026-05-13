@@ -1,0 +1,67 @@
+---
+import { gradientFor } from '../lib/gradients.js';
+const { image, index, total } = Astro.props;
+const gradient = gradientFor((image.src || image.title || '') + String(index ?? 0));
+---
+
+<figure class="plate">
+  <div class="plate__frame" style={`--ph-gradient: ${gradient}`}>
+    <img
+      src={image.src}
+      alt={image.alt}
+      loading={index < 2 ? 'eager' : 'lazy'}
+      decoding="async"
+      onerror="this.closest('.plate__frame').classList.add('plate__frame--missing'); this.remove();"
+    />
+  </div>
+  <figcaption class="plate__caption">
+    {image.title && <span class="plate__title">{image.title}</span>}
+    {(image.year || image.medium || image.dimensions) && (
+      <span class="plate__meta">
+        {[image.year, image.medium, image.dimensions].filter(Boolean).join(' · ')}
+      </span>
+    )}
+    {image.caption && <span class="plate__note">{image.caption}</span>}
+  </figcaption>
+</figure>
+
+<style>
+  .plate {
+    display: grid; gap: 0.75rem;
+    margin: clamp(2rem, 4vw, 3.5rem) 0;
+  }
+  .plate__frame {
+    background: var(--paper-rise);
+    overflow: hidden;
+    position: relative;
+  }
+  .plate__frame img {
+    width: 100%; height: auto; display: block;
+  }
+  .plate__frame--missing {
+    aspect-ratio: 4 / 5;
+    background: var(--ph-gradient, var(--paper-rise));
+  }
+  .plate__caption {
+    display: grid; gap: 0.25rem;
+    max-width: 56ch; padding-top: 0.25rem;
+  }
+  .plate__title {
+    font-family: var(--font-body);
+    font-size: var(--t-2);
+    color: var(--ink);
+  }
+  .plate__meta {
+    font-family: var(--font-body);
+    font-size: var(--t-1);
+    color: var(--ink-faint);
+    letter-spacing: 0.02em;
+  }
+  .plate__note {
+    font-family: var(--font-body);
+    font-size: var(--t-2);
+    color: var(--ink-dim);
+    line-height: 1.55;
+    margin-top: 0.35rem;
+  }
+</style>

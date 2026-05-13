@@ -1,0 +1,47 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import { gradientFor } from '../../../lib/gradients.js';
+
+const series = (await getCollection('film', ({ data }) => !data.draft))
+  .sort((a, b) => (b.data.year || '').localeCompare(a.data.year || ''));
+---
+
+<Base
+  title="Film"
+  description="35mm and analog film photography by Ajay Malghan."
+>
+  <section class="idx">
+    <h1 class="display idx__h">Film</h1>
+
+    <ul class="idx__list">
+      {series.map((s) => (
+        <li class="idx__row">
+          <a href={`/photography/film/${s.slug}`}>
+            <span class="idx__thumb" style={`background: ${gradientFor(s.slug)}`} aria-hidden="true"></span>
+            <h2 class="display idx__name">{s.data.title}</h2>
+            {s.data.year && <span class="idx__year">{s.data.year}</span>}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Base>
+
+<style>
+  .idx { max-width: 1100px; margin: 0 auto; padding: clamp(2.5rem, 5vw, 4rem) var(--page-x); }
+  .idx__h { font-size: var(--t-6); margin-bottom: 3rem; font-weight: 400; }
+  .idx__list { list-style: none; border-top: 1px solid var(--rule); }
+  .idx__row { border-bottom: 1px solid var(--rule); }
+  .idx__row a {
+    display: flex; align-items: center; gap: 1.25rem;
+    padding: 1.25rem 0; transition: padding 0.25s ease;
+  }
+  .idx__row a:hover { padding-left: 0.5rem; }
+  .idx__thumb {
+    flex: 0 0 60px; width: 60px; height: 75px; display: block;
+    background: var(--paper-rise);
+  }
+  .idx__name { flex: 1; font-size: var(--t-5); font-weight: 400; }
+  .idx__year { font-family: var(--font-body); font-size: var(--t-2); color: var(--ink-faint); }
+</style>

@@ -1,0 +1,56 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import Plate from '../../../components/Plate.astro';
+import { seriesSchema } from '../../../lib/schema.js';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('film', ({ data }) => !data.draft);
+  return entries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const data = entry.data;
+const jsonLd = seriesSchema({ ...data, slug: entry.slug, category: 'film' });
+---
+
+<Base
+  title={data.title}
+  description={data.description}
+  keywords={data.keywords}
+  ogImage={data.cover}
+  schema={jsonLd}
+>
+  <article class="series">
+    <div class="series__prose"><Content /></div>
+    <div class="series__plates">
+      {data.images.map((image, i) => (
+        <Plate image={image} index={i} total={data.images.length} />
+      ))}
+    </div>
+    <nav class="series__after">
+      <a href="/photography/film">← All film work</a>
+    </nav>
+  </article>
+</Base>
+
+<style>
+  .series { max-width: 900px; margin: 0 auto; padding: 0 var(--page-x); }
+  .series__prose :global(p) {
+    font-family: var(--font-body); font-size: var(--t-3); line-height: 1.7;
+    color: var(--ink); margin-bottom: 1.1em; max-width: 62ch;
+  }
+  .series__prose :global(a) { border-bottom: 1px solid var(--rule); }
+  .series__plates { margin-top: clamp(2rem, 4vw, 3rem); }
+  .series__after { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--rule); }
+  .series__after a {
+    font-family: var(--font-body); font-size: var(--t-2);
+    color: var(--ink-dim); border-bottom: 1px solid var(--rule);
+    padding-bottom: 2px; text-transform: capitalize;
+  }
+  .series__after a:hover { color: var(--ink); }
+</style>

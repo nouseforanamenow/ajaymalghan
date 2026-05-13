@@ -1,0 +1,74 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="Music"
+  description="Music by Ajay Malghan, including Limo Tinted Sun on Bandcamp."
+  keywords={['Limo Tinted Sun', 'Ajay Malghan music', 'Bandcamp']}
+>
+  <section class="music">
+    <h1 class="display music__h">Music</h1>
+
+    <div class="prose music__intro">
+      <p>
+        I've been a practicing musician since the age of six. I'm one half of
+        <a href="https://limotintedsun.bandcamp.com" target="_blank" rel="noopener">Limo Tinted Sun</a>.
+      </p>
+    </div>
+
+    <div class="music__embed">
+      <iframe
+        title="Space Tapes by Ajay Malghan on Bandcamp"
+        style="border: 0; width: 350px; max-width: 100%; height: 470px;"
+        src="https://bandcamp.com/EmbeddedPlayer/album=1594909007/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/transparent=true/"
+        seamless
+        loading="lazy"
+      >
+        <a href="https://ajaymalghan.bandcamp.com/album/space-tapes">Space Tapes by Ajay Malghan</a>
+      </iframe>
+    </div>
+
+    <div class="music__embed">
+      <iframe
+        title="Vessel by Ajay Malghan on Bandcamp"
+        style="border: 0; width: 350px; max-width: 100%; height: 470px;"
+        src="https://bandcamp.com/EmbeddedPlayer/album=3911337621/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/transparent=true/"
+        seamless
+        loading="lazy"
+      >
+        <a href="https://ajaymalghan.bandcamp.com/album/vessel">Vessel by Ajay Malghan</a>
+      </iframe>
+      <p class="music__note">
+        <a href="https://ajaymalghan.bandcamp.com" target="_blank" rel="noopener">More on Bandcamp →</a>
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .music {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: clamp(2.5rem, 5vw, 4rem) var(--page-x);
+  }
+  .music__h {
+    font-size: var(--t-6);
+    margin-bottom: 1.5rem;
+    font-weight: 400;
+  }
+  .music__intro { margin-bottom: 2.5rem; }
+  .music__embed { margin-top: 1.5rem; }
+  .music__note {
+    margin-top: 1rem;
+    font-family: var(--font-body);
+    font-size: var(--t-2);
+  }
+  .music__note a {
+    color: var(--ink);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 2px;
+    transition: border-color 0.2s ease;
+  }
+  .music__note a:hover { border-color: var(--ink); }
+</style>

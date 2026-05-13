@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Not Found" description="Page not found." noindex={true}>
+  <section class="nf">
+    <div class="nf__tile" aria-hidden="true"></div>
+    <h1 class="display nf__h">404</h1>
+    <p class="nf__msg">That work isn't here. Try the index.</p>
+    <a href="/" class="nf__link">Return home →</a>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    position: relative;
+    max-width: 64ch; margin: 0 auto;
+    padding: clamp(3rem, 8vw, 6rem) var(--page-x);
+    min-height: 60vh;
+  }
+  .nf__tile {
+    position: absolute;
+    top: clamp(2rem, 6vw, 4rem);
+    right: clamp(2rem, 8vw, 6rem);
+    width: 120px; height: 150px;
+    background: linear-gradient(135deg, #e8e2d4, #a89c8a 60%, #4a4238);
+  }
+  .nf__h {
+    font-size: var(--t-6); margin-bottom: 1.25rem;
+    font-weight: 400; letter-spacing: 0.02em;
+  }
+  .nf__msg {
+    font-family: var(--font-body); font-size: var(--t-3);
+    color: var(--ink-dim); line-height: 1.5; max-width: 36ch;
+  }
+  .nf__link {
+    display: inline-block; margin-top: 2rem;
+    font-family: var(--font-body); font-size: var(--t-2);
+    color: var(--ink); border-bottom: 1px solid var(--rule);
+    padding-bottom: 2px;
+  }
+  @media (max-width: 560px) {
+    .nf__tile { width: 80px; height: 100px; top: 1rem; right: var(--page-x); }
+  }
+</style>

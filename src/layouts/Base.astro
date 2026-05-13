@@ -1,0 +1,67 @@
+---
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { artistSchema } from '../lib/schema.js';
+
+const {
+  title = 'Ajay Malghan',
+  description = 'Ajay Malghan is an artist working in cameraless and chromaskedasic photography, abstract and documentary image-making, and painting.',
+  ogImage = '/og-default.svg',
+  keywords = [],
+  schema = null,
+  noindex = false,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const fullTitle = title === 'Ajay Malghan' ? title : `${title} — Ajay Malghan`;
+const allKeywords = [
+  'Ajay Malghan',
+  'cameraless photography',
+  'chromaskedasic',
+  'abstract photography',
+  'documentary photography',
+  'painting',
+  ...keywords,
+].join(', ');
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content={allKeywords} />
+    <meta name="author" content="Ajay Malghan" />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="canonical" href={canonical} />
+
+    <!-- Open Graph (used by Instagram, iMessage, Signal, Discord, etc.) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(ogImage, Astro.site).toString()} />
+    <meta property="og:site_name" content="Ajay Malghan" />
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json" set:html={JSON.stringify(artistSchema())} />
+    {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+
+    <!-- Performance hints -->
+    <link rel="preconnect" href="https://images.ajaymalghan.com" crossorigin />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <Nav />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

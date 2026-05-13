@@ -1,0 +1,81 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="About"
+  description="Ajay Malghan is an Indian-American artist working in cameraless photography, abstract and documentary image-making, film, and painting. Based in Rockville, Maryland."
+>
+  <section class="about">
+    <h1 class="display about__h">About</h1>
+
+    <div class="about__body prose">
+      <p>
+        I'm an Indian-American artist and the son of first-generation immigrant
+        parents. I've exhibited across the country and lectured in Hong Kong,
+        India, and a range of universities in the US. I've been a practicing
+        musician since the age of six, and I'm one half of the band
+        <a href="/music">Limo Tinted Sun</a>.
+      </p>
+      <p>
+        My work is held in the private collections of Johns Hopkins University,
+        the University of Texas, and Georgetown University.
+      </p>
+      <p>
+        Over the years my work has been featured in publications including
+        <a href="https://oxfordamerican.org/eyes/devil-x2019-s-half-acre" target="_blank" rel="noopener">Oxford American</a>,
+        <a href="https://www.washingtonpost.com/lifestyle/style/in-the-galleries-a-homage-to-hillary-is-repurposed/2016/12/15/da55781e-c09f-11e6-897f-918837dae0ae_story.html" target="_blank" rel="noopener">the Washington Post</a>,
+        <a href="https://www.wired.com/2014/08/ajay-malghan-bleached/" target="_blank" rel="noopener">Wired</a>,
+        <a href="http://www.npr.org/sections/thesalt/2013/06/09/178444120/an-abstract-look-at-the-food-we-eat" target="_blank" rel="noopener">NPR</a>,
+        <a href="https://www.vice.com/en_us/article/9anqdz/mulching-pictures-is-natures-photoshop" target="_blank" rel="noopener">Vice</a>, and elsewhere.
+      </p>
+      <p>
+        I live in Rockville, Maryland, where I also run
+        <a href="https://www.aharamushrooms.com" target="_blank" rel="noopener">Ahara Mushrooms</a>.
+      </p>
+    </div>
+
+    <div class="about__contact">
+      <span class="about__contact-label">Contact</span>
+      <a href="mailto:ajaymalghan@gmail.com" class="about__email">ajaymalghan@gmail.com</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .about {
+    max-width: 64ch;
+    margin: 0 auto;
+    padding: clamp(2.5rem, 5vw, 4rem) var(--page-x);
+  }
+  .about__h {
+    font-size: var(--t-6);
+    margin-bottom: 2rem;
+    font-weight: 400;
+  }
+  .about__body { margin-bottom: 3rem; }
+  .about__body p { font-size: var(--t-3); }
+  .about__contact {
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+    display: grid;
+    gap: 0.5rem;
+  }
+  .about__contact-label {
+    font-family: var(--font-body);
+    font-size: var(--t-1);
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+  }
+  .about__email {
+    font-family: var(--font-body);
+    font-size: var(--t-3);
+    color: var(--ink);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 2px;
+    display: inline-block;
+    width: max-content;
+    transition: border-color 0.2s ease;
+  }
+  .about__email:hover { border-color: var(--ink); }
+</style>
