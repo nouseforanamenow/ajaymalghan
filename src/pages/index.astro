@@ -17,12 +17,8 @@ const featured = [
     <ul class="grid">
       {featured.map((f) => (
         <li class="grid__cell">
-          <a href={f.href}>
+          <a href={f.href} aria-label={f.title}>
             <div class={`tile ${f.cls}`}></div>
-            <div class="grid__meta">
-              <span class="grid__title">{f.title}</span>
-              {f.year && <span class="grid__year">{f.year}</span>}
-            </div>
           </a>
         </li>
       ))}
@@ -54,18 +50,6 @@ const featured = [
   }
 
   .grid__cell a:hover .tile { opacity: 0.85; }
-
-  .grid__meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-top: 10px;
-    padding: 0 2px;
-    gap: 8px;
-  }
-
-  .grid__title { font-family: var(--font-body); font-size: var(--t-2); color: var(--ink); flex: 1; }
-  .grid__year { font-family: var(--font-body); font-size: var(--t-1); color: var(--ink-faint); letter-spacing: 0.04em; white-space: nowrap; }
 
   .ph-1 { background: linear-gradient(135deg, #d4c4a8, #9a8568); }
   .ph-2 { background: linear-gradient(135deg, #e8e2d4, #a89c8a 60%, #4a4238); }
