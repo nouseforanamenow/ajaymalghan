@@ -31,13 +31,17 @@ const featured = [
 </Base>
 
 <style>
-  .home { padding: clamp(2rem, 4vw, 4rem) var(--page-x) 4rem; }
+  .home {
+    padding: clamp(2rem, 4vw, 4rem) var(--page-x) 4rem;
+    max-width: 880px;
+    margin: 0 auto;
+  }
 
   .grid {
     list-style: none;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: clamp(0.75rem, 1.5vw, 1.25rem);
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(1rem, 2vw, 1.75rem);
   }
 
   .grid__cell a { display: block; }
@@ -72,7 +76,5 @@ const featured = [
   .ph-7 { background: radial-gradient(circle at 70% 60%, #6a5a4a, #2a2520); }
   .ph-8 { background: linear-gradient(135deg, #c8b8a8, #8a7868 60%, #4a3828); }
 
-  @media (max-width: 980px) { .grid { grid-template-columns: repeat(3, 1fr); } }
-  @media (max-width: 720px) { .grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 440px) { .grid { grid-template-columns: 1fr; } }
 </style>
