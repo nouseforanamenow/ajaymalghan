@@ -1,12 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 
-const featured = [
-  { href: '/photography/cameraless/atom-city', title: 'Atom City', year: '2019—2022', cls: 'ph-1' },
-  { href: '/photography/cameraless/urantia', title: 'Urantia', year: '2015—2017', cls: 'ph-3' },
-  { href: '/photography/abstract/time', title: 'Time', year: '2014—2016', cls: 'ph-5' },
-  { href: '/painting/cant-remember', title: "Can't Remember What I Was Trying to Forget", year: '2019—2021', cls: 'ph-8' },
-];
+const featured = { href: '/photography/cameraless/atom-city', title: 'Atom City', cls: 'ph-1' };
 ---
 
 <Base
@@ -14,33 +9,20 @@ const featured = [
   description="Ajay Malghan is an artist working in cameraless and chromaskedasic photography, abstract and documentary image-making, film, and painting. Based in Rockville, Maryland."
 >
   <section class="home">
-    <ul class="grid">
-      {featured.map((f) => (
-        <li class="grid__cell">
-          <a href={f.href} aria-label={f.title}>
-            <div class={`tile ${f.cls}`}></div>
-          </a>
-        </li>
-      ))}
-    </ul>
+    <a class="hero" href={featured.href} aria-label={featured.title}>
+      <div class={`tile ${featured.cls}`}></div>
+    </a>
   </section>
 </Base>
 
 <style>
   .home {
     padding: clamp(2rem, 4vw, 4rem) var(--page-x) 4rem;
-    max-width: 880px;
+    max-width: 720px;
     margin: 0 auto;
   }
 
-  .grid {
-    list-style: none;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: clamp(1rem, 2vw, 1.75rem);
-  }
-
-  .grid__cell a { display: block; }
+  .hero { display: block; }
 
   .tile {
     aspect-ratio: 4 / 5;
@@ -49,7 +31,7 @@ const featured = [
     transition: opacity 0.4s ease;
   }
 
-  .grid__cell a:hover .tile { opacity: 0.85; }
+  .hero:hover .tile { opacity: 0.9; }
 
   .ph-1 { background: linear-gradient(135deg, #d4c4a8, #9a8568); }
   .ph-2 { background: linear-gradient(135deg, #e8e2d4, #a89c8a 60%, #4a4238); }
@@ -60,5 +42,4 @@ const featured = [
   .ph-7 { background: radial-gradient(circle at 70% 60%, #6a5a4a, #2a2520); }
   .ph-8 { background: linear-gradient(135deg, #c8b8a8, #8a7868 60%, #4a3828); }
 
-  @media (max-width: 440px) { .grid { grid-template-columns: 1fr; } }
 </style>
