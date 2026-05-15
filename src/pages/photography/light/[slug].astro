@@ -6,7 +6,7 @@ import VideoPlate from '../../../components/VideoPlate.astro';
 import { seriesSchema } from '../../../lib/schema.js';
 
 export async function getStaticPaths() {
-  const entries = await getCollection('abstract', ({ data }) => !data.draft);
+  const entries = await getCollection('light', ({ data }) => !data.draft);
   return entries.map((entry) => ({
     params: { slug: entry.slug },
     props: { entry },
@@ -42,7 +42,7 @@ const jsonLd = seriesSchema({ ...data, slug: entry.slug, category: 'abstract' })
       <Slideshow images={data.images} />
     </div>
     <nav class="series__after">
-      <a href="/photography/abstract">← All abstract work</a>
+      <a href="/photography/light">← All Light work</a>
     </nav>
   </article>
 </Base>

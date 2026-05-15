@@ -4,7 +4,7 @@ const seriesSchema = z.object({
   title: z.string(),
   year: z.string(),
   medium: z.string(),
-  category: z.enum(['abstract', 'cameraless', 'film', 'documentary', 'painting']),
+  category: z.enum(['light', 'cameraless', 'film', 'documentary', 'painting']),
   process: z.string().optional(),
   description: z.string(),
   keywords: z.array(z.string()),
@@ -29,11 +29,12 @@ const seriesSchema = z.object({
     caption: z.string().optional(),
     aspectRatio: z.string().default('9/16'),
   })).optional(),
+  order: z.number().optional(),
   draft: z.boolean().default(false),
 });
 
 export const collections = {
-  abstract: defineCollection({ type: 'content', schema: seriesSchema }),
+  light: defineCollection({ type: 'content', schema: seriesSchema }),
   cameraless: defineCollection({ type: 'content', schema: seriesSchema }),
   film: defineCollection({ type: 'content', schema: seriesSchema }),
   documentary: defineCollection({ type: 'content', schema: seriesSchema }),
