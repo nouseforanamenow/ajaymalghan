@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import Plate from '../../components/Plate.astro';
+import Slideshow from '../../components/Slideshow.astro';
 import { seriesSchema } from '../../lib/schema.js';
 
 export async function getStaticPaths() {
@@ -27,10 +27,8 @@ const jsonLd = seriesSchema({ ...data, slug: entry.slug, category: 'painting' })
 >
   <article class="series">
     <div class="series__prose"><Content /></div>
-    <div class="series__plates">
-      {data.images.map((image, i) => (
-        <Plate image={image} index={i} total={data.images.length} />
-      ))}
+    <div class="series__slideshow">
+      <Slideshow images={data.images} />
     </div>
     <nav class="series__after">
       <a href="/painting">← All Painting</a>
@@ -44,8 +42,9 @@ const jsonLd = seriesSchema({ ...data, slug: entry.slug, category: 'painting' })
     font-family: var(--font-body); font-size: var(--t-3); line-height: 1.7;
     color: var(--ink); margin-bottom: 1.1em; max-width: 62ch;
   }
-  .series__plates { margin-top: clamp(2rem, 4vw, 3rem); }
-  .series__after { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--rule); }
+  .series__slideshow { margin-top: 0.5rem; }
+  .series__prose :global(p:empty) { display: none; }
+  .series__after { margin-top: 3.5rem; padding-top: 1.25rem; border-top: 1px solid var(--rule); }
   .series__after a {
     font-family: var(--font-body); font-size: var(--t-2);
     color: var(--ink-dim); border-bottom: 1px solid var(--rule);

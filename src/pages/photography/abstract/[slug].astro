@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../../../layouts/Base.astro';
-import Plate from '../../../components/Plate.astro';
+import Slideshow from '../../../components/Slideshow.astro';
 import VideoPlate from '../../../components/VideoPlate.astro';
 import { seriesSchema } from '../../../lib/schema.js';
 
@@ -37,10 +37,8 @@ const jsonLd = seriesSchema({ ...data, slug: entry.slug, category: 'abstract' })
       </div>
     )}
 
-    <div class="series__plates">
-      {data.images.map((image, i) => (
-        <Plate image={image} index={i} total={data.images.length} />
-      ))}
+    <div class="series__slideshow">
+      <Slideshow images={data.images} />
     </div>
     <nav class="series__after">
       <a href="/photography/abstract">← All abstract work</a>
@@ -55,7 +53,8 @@ const jsonLd = seriesSchema({ ...data, slug: entry.slug, category: 'abstract' })
     color: var(--ink); margin-bottom: 1.1em; max-width: 62ch;
   }
   .series__prose :global(a) { border-bottom: 1px solid var(--rule); }
-  .series__plates { margin-top: clamp(2rem, 4vw, 3rem); }
+  .series__slideshow { margin-top: 0.5rem; }
+  .series__prose :global(p:empty) { display: none; }
   .series__videos {
     margin-top: clamp(2rem, 4vw, 3rem);
     display: grid;
