@@ -23,9 +23,21 @@ const { images } = Astro.props;
   </div>
 
   {images.length > 1 && (
-    <div class="slideshow__counter" aria-live="polite">
-      <span class="js-current">1</span><span class="slideshow__sep">/</span><span>{images.length}</span>
-    </div>
+    <>
+      <button class="slideshow__edge slideshow__edge--prev" data-slideshow-prev aria-label="Previous image">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <path d="M15 4 L7 12 L15 20" fill="none" stroke="currentColor" stroke-width="1.4" />
+        </svg>
+      </button>
+      <button class="slideshow__edge slideshow__edge--next" data-slideshow-next aria-label="Next image">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <path d="M9 4 L17 12 L9 20" fill="none" stroke="currentColor" stroke-width="1.4" />
+        </svg>
+      </button>
+      <div class="slideshow__counter" aria-live="polite">
+        <span class="js-current">1</span><span class="slideshow__sep">/</span><span>{images.length}</span>
+      </div>
+    </>
   )}
 </div>
 
@@ -88,8 +100,37 @@ const { images } = Astro.props;
     font-size: var(--t-1);
     color: var(--ink-faint);
     letter-spacing: 0.08em;
+    pointer-events: none;
   }
   .slideshow__sep { padding: 0 0.3rem; color: var(--rule); }
+
+  .slideshow__edge {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: clamp(48px, 8vw, 96px);
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-dim);
+    opacity: 0;
+    transition: opacity 0.25s ease, color 0.25s ease;
+    z-index: 3;
+  }
+  .slideshow__edge--prev { left: 0; }
+  .slideshow__edge--next { right: 0; }
+  .slideshow:hover .slideshow__edge,
+  .slideshow__edge:focus-visible {
+    opacity: 1;
+  }
+  .slideshow__edge:hover { color: var(--ink); }
+
+  @media (hover: none) {
+    /* On touch devices keep them visible at low opacity */
+    .slideshow__edge { opacity: 0.55; }
+  }
 
 </style>
 
