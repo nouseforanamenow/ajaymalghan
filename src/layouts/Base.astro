@@ -11,6 +11,7 @@ const {
   keywords = [],
   schema = null,
   noindex = false,
+  pieceTitle = '',
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
@@ -62,6 +63,6 @@ const allKeywords = [
     <main>
       <slot />
     </main>
-    <Footer />
+    <Footer pieceTitle={pieceTitle} />
   </body>
 </html>

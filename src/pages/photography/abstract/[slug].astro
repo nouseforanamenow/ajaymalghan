@@ -25,6 +25,7 @@ const jsonLd = seriesSchema({ ...data, slug: entry.slug, category: 'abstract' })
   keywords={data.keywords}
   ogImage={data.cover}
   schema={jsonLd}
+  pieceTitle={data.title}
 >
   <article class="series">
     <div class="series__prose"><Content /></div>

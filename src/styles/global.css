@@ -46,6 +46,8 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   background: var(--paper);
+  /* leave room for the fixed footer */
+  padding-bottom: 3.75rem;
 }
 
 img, video { display: block; max-width: 100%; height: auto; }
