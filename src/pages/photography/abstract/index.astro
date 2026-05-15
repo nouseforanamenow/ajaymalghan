@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../../../layouts/Base.astro';
-import { gradientFor } from '../../../lib/gradients.js';
 
 const series = (await getCollection('abstract', ({ data }) => !data.draft))
   .sort((a, b) => (b.data.year || '').localeCompare(a.data.year || ''));
@@ -18,7 +17,7 @@ const series = (await getCollection('abstract', ({ data }) => !data.draft))
       {series.map((s) => (
         <li class="idx__row">
           <a href={`/photography/abstract/${s.slug}`}>
-            <span class="idx__thumb" style={`background: ${gradientFor(s.slug)}`} aria-hidden="true"></span>
+            <span class="idx__thumb"><img src={s.data.cover} alt="" loading="lazy" decoding="async" onerror="this.remove();" /></span>
             <h2 class="display idx__name">{s.data.title}</h2>
             {s.data.year && <span class="idx__year">{s.data.year}</span>}
           </a>
@@ -40,8 +39,9 @@ const series = (await getCollection('abstract', ({ data }) => !data.draft))
   .idx__row a:hover { padding-left: 0.5rem; }
   .idx__thumb {
     flex: 0 0 60px; width: 60px; height: 75px; display: block;
-    background: var(--paper-rise);
+    background: var(--paper-rise); overflow: hidden;
   }
+  .idx__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .idx__name { flex: 1; font-size: var(--t-5); font-weight: 400; }
   .idx__year { font-family: var(--font-body); font-size: var(--t-2); color: var(--ink-faint); }
 </style>
