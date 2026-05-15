@@ -2,10 +2,10 @@
 import Base from '../../layouts/Base.astro';
 
 const cats = [
-  { href: '/photography/abstract', title: 'Abstract', desc: 'Abstract image-making.' },
-  { href: '/photography/cameraless', title: 'Cameraless', desc: 'Chromaskedasic photography, made without a camera.' },
-  { href: '/photography/film', title: 'Film', desc: '35mm and analog film work.' },
-  { href: '/photography/documentary', title: 'Documentary', desc: 'People, places, and history.' },
+  { href: '/photography/abstract', title: 'Abstract' },
+  { href: '/photography/cameraless', title: 'Cameraless' },
+  { href: '/photography/film', title: 'Film' },
+  { href: '/photography/documentary', title: 'Documentary' },
 ];
 ---
 
@@ -20,7 +20,6 @@ const cats = [
       {cats.map((c) => (
         <a href={c.href} class="split__card">
           <h2 class="display split__name">{c.title}</h2>
-          <p class="split__desc">{c.desc}</p>
         </a>
       ))}
     </div>
