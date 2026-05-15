@@ -11,27 +11,42 @@ import Base from '../../layouts/Base.astro';
 
     <div class="about__body prose">
       <p>
-        I'm an Indian-American artist and the son of first-generation immigrant
-        parents. I've exhibited across the country and lectured in Hong Kong,
-        India, and a range of universities in the US. I've been a practicing
-        musician since the age of six, and I'm one half of the band
-        <a href="/music">Limo Tinted Sun</a>.
+        I make art because I find an immense amount of joy in the process.
+        Time has no significance or meaning when I'm in the act of creation.
+        Some pieces take minutes, some take months. Rarely have I ever made a
+        piece better by going back to it.
       </p>
       <p>
-        My work is held in the private collections of Johns Hopkins University,
-        the University of Texas, and Georgetown University.
+        Constant experimentation over the years has taught me that I'm
+        capturing an energy. That energy used to be manic, angry and mostly
+        confused, but something shifted once I stopped drinking and doing
+        drugs. While I never created under the influence, ceasing to ingest
+        toxic thoughts and substances removed a dense layer of fog between
+        me and my creativity. Upon that layer burning off, I stopped chasing
+        and learned to listen more intently.
+      </p>
+
+      <ul class="about__qa">
+        <li><em>Why do I make art?</em> Because I love it.</li>
+        <li><em>What is the point of this idea?</em> Finish it first, then ask.</li>
+        <li><em>What am I going to do with it?</em> Who cares?</li>
+      </ul>
+
+      <p>
+        What drives someone to photograph sites of slave markets, put
+        cheeseburgers in enlargers and record abrasive drone music?
       </p>
       <p>
-        Over the years my work has been featured in publications including
-        <a href="https://oxfordamerican.org/eyes/devil-x2019-s-half-acre" target="_blank" rel="noopener">Oxford American</a>,
-        <a href="https://www.washingtonpost.com/lifestyle/style/in-the-galleries-a-homage-to-hillary-is-repurposed/2016/12/15/da55781e-c09f-11e6-897f-918837dae0ae_story.html" target="_blank" rel="noopener">the Washington Post</a>,
-        <a href="https://www.wired.com/2014/08/ajay-malghan-bleached/" target="_blank" rel="noopener">Wired</a>,
-        <a href="http://www.npr.org/sections/thesalt/2013/06/09/178444120/an-abstract-look-at-the-food-we-eat" target="_blank" rel="noopener">NPR</a>,
-        <a href="https://www.vice.com/en_us/article/9anqdz/mulching-pictures-is-natures-photoshop" target="_blank" rel="noopener">Vice</a>, and elsewhere.
+        The answer is quite simple — highly sensitive people hear and see
+        things which others can't imagine or grasp. It's why so many struggle
+        with mental health.
       </p>
       <p>
-        I live in Rockville, Maryland, where I also run
-        <a href="https://www.aharamushrooms.com" target="_blank" rel="noopener">Ahara Mushrooms</a>.
+        We feel everything and most of the time it's too much.
+      </p>
+      <p>
+        I'm one of the fortunate ones who can use multiple mediums to make
+        sense of the world and how I view it.
       </p>
     </div>
 
@@ -54,7 +69,22 @@ import Base from '../../layouts/Base.astro';
     font-weight: 400;
   }
   .about__body { margin-bottom: 3rem; }
-  .about__body p { font-size: var(--t-3); }
+  .about__body p { font-size: var(--t-3); margin-bottom: 1.1em; line-height: 1.7; }
+  .about__qa {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0 2rem;
+    border-left: 1px solid var(--rule);
+    padding-left: 1.25rem;
+    display: grid;
+    gap: 0.4rem;
+  }
+  .about__qa li {
+    font-size: var(--t-3);
+    color: var(--ink-dim);
+    line-height: 1.55;
+  }
+  .about__qa em { color: var(--ink); font-style: italic; margin-right: 0.35em; }
   .about__contact {
     padding-top: 2rem;
     border-top: 1px solid var(--rule);
