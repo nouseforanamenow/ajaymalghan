@@ -24,16 +24,8 @@ const { images } = Astro.props;
 
   {images.length > 1 && (
     <>
-      <button class="slideshow__zone slideshow__zone--prev" data-slideshow-prev aria-label="Previous image" tabindex="-1">
-        <svg class="slideshow__chev" viewBox="0 0 32 32" width="28" height="28" aria-hidden="true">
-          <path d="M21 6 L11 16 L21 26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
-      <button class="slideshow__zone slideshow__zone--next" data-slideshow-next aria-label="Next image" tabindex="-1">
-        <svg class="slideshow__chev" viewBox="0 0 32 32" width="28" height="28" aria-hidden="true">
-          <path d="M11 6 L21 16 L11 26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
+      <button class="slideshow__zone slideshow__zone--prev" data-slideshow-prev aria-label="Previous image" tabindex="-1"></button>
+      <button class="slideshow__zone slideshow__zone--next" data-slideshow-next aria-label="Next image" tabindex="-1"></button>
       <div class="slideshow__counter" aria-live="polite">
         <span class="js-current">1</span><span class="slideshow__sep">/</span><span>{images.length}</span>
       </div>
@@ -112,33 +104,16 @@ const { images } = Astro.props;
     border: 0;
     padding: 0;
     z-index: 3;
-    display: flex;
-    align-items: center;
-    color: var(--ink-dim);
   }
   .slideshow__zone--prev {
     left: 0;
-    justify-content: flex-start;
-    padding-left: clamp(0.75rem, 2vw, 1.5rem);
     cursor: url('/cursors/arrow-left.svg') 16 16, w-resize;
   }
   .slideshow__zone--next {
     right: 0;
-    justify-content: flex-end;
-    padding-right: clamp(0.75rem, 2vw, 1.5rem);
     cursor: url('/cursors/arrow-right.svg') 16 16, e-resize;
   }
   .slideshow__zone:focus { outline: none; }
-  .slideshow__chev {
-    opacity: 0.55;
-    transition: opacity 0.2s ease, color 0.2s ease, transform 0.2s ease;
-  }
-  .slideshow__zone:hover .slideshow__chev {
-    opacity: 1;
-    color: var(--ink);
-  }
-  .slideshow__zone--prev:hover .slideshow__chev { transform: translateX(-2px); }
-  .slideshow__zone--next:hover .slideshow__chev { transform: translateX(2px); }
 
 </style>
 
