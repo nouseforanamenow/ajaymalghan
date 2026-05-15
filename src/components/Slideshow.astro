@@ -33,8 +33,8 @@ const { images } = Astro.props;
   .slideshow {
     position: relative;
     width: 100%;
-    /* Viewport minus top nav (~3.5rem), footer (~3.25rem), spacing, plus another 10% breathing room */
-    height: calc(100svh - 13.5rem);
+    /* Fills the flex container — parent reserves space between nav, intro, and footer. */
+    height: 100%;
     min-height: 320px;
     user-select: none;
   }
@@ -91,9 +91,6 @@ const { images } = Astro.props;
   }
   .slideshow__sep { padding: 0 0.3rem; color: var(--rule); }
 
-  @media (max-width: 720px) {
-    .slideshow { height: calc(100svh - 11rem); }
-  }
 </style>
 
 <script>

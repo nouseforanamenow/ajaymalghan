@@ -48,26 +48,24 @@ const jsonLd = seriesSchema({ ...data, slug: entry.slug, category: 'abstract' })
 </Base>
 
 <style>
-  .series { max-width: 900px; margin: 0 auto; padding: 0 var(--page-x); }
-  .series__prose :global(p) {
-    font-family: var(--font-body); font-size: var(--t-3); line-height: 1.7;
-    color: var(--ink); margin-bottom: 1.1em; max-width: 62ch;
+  .series {
+    max-width: 1200px; margin: 0 auto; padding: 0 var(--page-x);
+    height: calc(100svh - 8rem);
+    display: flex; flex-direction: column;
   }
-  .series__prose :global(a) { border-bottom: 1px solid var(--rule); }
-  .series__slideshow { margin-top: 0.5rem; }
+  .series__prose :global(p) {
+    font-family: var(--font-body); font-size: var(--t-2); line-height: 1.55;
+    color: var(--ink-dim); margin-bottom: 0.4em; max-width: 62ch;
+  }
   .series__prose :global(p:empty) { display: none; }
+  .series__prose :global(a) { border-bottom: 1px solid var(--rule); }
+  .series__slideshow { flex: 1; min-height: 0; }
   .series__videos {
-    margin-top: clamp(2rem, 4vw, 3rem);
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: clamp(1.5rem, 3vw, 2.5rem);
     justify-items: center;
+    margin-bottom: 0.75rem;
   }
-  .series__after { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--rule); }
-  .series__after a {
-    font-family: var(--font-body); font-size: var(--t-2);
-    color: var(--ink-dim); border-bottom: 1px solid var(--rule);
-    padding-bottom: 2px; text-transform: capitalize;
-  }
-  .series__after a:hover { color: var(--ink); }
+  .series__after { display: none; }
 </style>

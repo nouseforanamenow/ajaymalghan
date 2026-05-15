@@ -12,13 +12,14 @@ const { title, year, medium } = Astro.props;
 
 <style>
   .series-intro {
-    padding: clamp(1rem, 2vw, 1.5rem) 0 clamp(0.5rem, 1vw, 0.75rem);
+    padding: 0.5rem 0 0;
     max-width: 64ch;
+    flex: 0 0 auto;
   }
   .series-intro__title {
-    font-size: var(--t-5);
+    font-size: var(--t-4);
     font-weight: 400;
-    margin-bottom: 0.35rem;
+    margin-bottom: 0.15rem;
   }
   .series-intro__line {
     display: flex; gap: 0.75rem; align-items: center;
