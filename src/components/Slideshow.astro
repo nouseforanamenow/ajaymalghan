@@ -23,9 +23,13 @@ const { images } = Astro.props;
   </div>
 
   {images.length > 1 && (
-    <div class="slideshow__counter" aria-live="polite">
-      <span class="js-current">1</span><span class="slideshow__sep">/</span><span>{images.length}</span>
-    </div>
+    <>
+      <button class="slideshow__zone slideshow__zone--prev" data-slideshow-prev aria-label="Previous image" tabindex="-1"></button>
+      <button class="slideshow__zone slideshow__zone--next" data-slideshow-next aria-label="Next image" tabindex="-1"></button>
+      <div class="slideshow__counter" aria-live="polite">
+        <span class="js-current">1</span><span class="slideshow__sep">/</span><span>{images.length}</span>
+      </div>
+    </>
   )}
 </div>
 
@@ -91,6 +95,25 @@ const { images } = Astro.props;
     pointer-events: none;
   }
   .slideshow__sep { padding: 0 0.3rem; color: var(--rule); }
+
+  .slideshow__zone {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 50%;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    z-index: 3;
+  }
+  .slideshow__zone--prev {
+    left: 0;
+    cursor: url('/cursors/arrow-left.svg') 16 16, w-resize;
+  }
+  .slideshow__zone--next {
+    right: 0;
+    cursor: url('/cursors/arrow-right.svg') 16 16, e-resize;
+  }
+  .slideshow__zone:focus { outline: none; }
 
 </style>
 
