@@ -1,33 +1,79 @@
 ---
 import { gradientFor } from '../lib/gradients.js';
-const { images } = Astro.props;
+const { images = [], videos = [] } = Astro.props;
+const slides = [
+  ...videos.map((v) => ({ kind: 'video', data: v })),
+  ...images.map((i) => ({ kind: 'image', data: i })),
+];
+const total = slides.length;
 ---
 
-<div class="slideshow" data-slideshow data-total={images.length}>
+<div class="slideshow" data-slideshow data-total={total}>
   <div class="slideshow__viewport">
-    {images.map((img, i) => (
-      <div
-        class={`slide ${i === 0 ? 'slide--active' : ''}`}
-        data-index={i}
-        style={`--ph-gradient: ${gradientFor((img.src || '') + i)}`}
-      >
-        <img
-          src={img.src}
-          alt={img.alt || ''}
-          loading={i < 2 ? 'eager' : 'lazy'}
-          decoding="async"
-          onerror="this.closest('.slide').classList.add('slide--missing'); this.remove();"
-        />
-      </div>
-    ))}
+    {slides.map((slide, i) => {
+      const isActive = i === 0;
+      if (slide.kind === 'video') {
+        const v = slide.data;
+        const ratio = v.aspectRatio || (v.vimeo ? '16/9' : '9/16');
+        const src = v.vimeo
+          ? `https://player.vimeo.com/video/${v.vimeo}?title=0&byline=0&portrait=0&badge=0&autopause=0`
+          : null;
+        return (
+          <div
+            class={`slide slide--video ${isActive ? 'slide--active' : ''}`}
+            data-index={i}
+            data-kind="video"
+          >
+            <div class="slide__video-frame" style={`aspect-ratio: ${ratio};`}>
+              {src ? (
+                <iframe
+                  src={src}
+                  title={v.title || v.alt}
+                  frameborder="0"
+                  allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  loading={i < 1 ? 'eager' : 'lazy'}
+                ></iframe>
+              ) : (
+                <video
+                  src={v.src}
+                  poster={v.poster}
+                  controls
+                  playsinline
+                  preload={i < 1 ? 'metadata' : 'none'}
+                  aria-label={v.alt}
+                ></video>
+              )}
+            </div>
+          </div>
+        );
+      }
+      const img = slide.data;
+      return (
+        <div
+          class={`slide ${isActive ? 'slide--active' : ''}`}
+          data-index={i}
+          data-kind="image"
+          style={`--ph-gradient: ${gradientFor((img.src || '') + i)}`}
+        >
+          <img
+            src={img.src}
+            alt={img.alt || ''}
+            loading={i < 2 ? 'eager' : 'lazy'}
+            decoding="async"
+            onerror="this.closest('.slide').classList.add('slide--missing'); this.remove();"
+          />
+        </div>
+      );
+    })}
   </div>
 
-  {images.length > 1 && (
+  {total > 1 && (
     <>
-      <button class="slideshow__zone slideshow__zone--prev" data-slideshow-prev aria-label="Previous image" tabindex="-1"></button>
-      <button class="slideshow__zone slideshow__zone--next" data-slideshow-next aria-label="Next image" tabindex="-1"></button>
+      <button class="slideshow__zone slideshow__zone--prev" data-slideshow-prev aria-label="Previous" tabindex="-1"></button>
+      <button class="slideshow__zone slideshow__zone--next" data-slideshow-next aria-label="Next" tabindex="-1"></button>
       <div class="slideshow__counter" aria-live="polite">
-        <span class="js-current">1</span><span class="slideshow__sep">/</span><span>{images.length}</span>
+        <span class="js-current">1</span><span class="slideshow__sep">/</span><span>{total}</span>
       </div>
     </>
   )}
@@ -72,6 +118,24 @@ const { images } = Astro.props;
     width: auto;
     height: auto;
     object-fit: contain;
+    display: block;
+  }
+
+  .slide__video-frame {
+    width: min(90%, calc((90vh - 8rem)));
+    max-width: 90%;
+    max-height: 90%;
+    background: var(--paper-rise);
+    position: relative;
+    overflow: hidden;
+  }
+  .slide__video-frame iframe,
+  .slide__video-frame video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
     display: block;
   }
 
@@ -124,8 +188,19 @@ const { images } = Astro.props;
     const counter = s.querySelector('.js-current');
     let i = 0;
 
+    const pauseSlideMedia = (slide) => {
+      slide.querySelectorAll('iframe').forEach((f) => {
+        try {
+          f.contentWindow?.postMessage(JSON.stringify({ method: 'pause' }), '*');
+        } catch {}
+      });
+      slide.querySelectorAll('video').forEach((v) => { try { v.pause(); } catch {} });
+    };
+
     const go = (n) => {
-      slides[i].classList.remove('slide--active');
+      const prev = slides[i];
+      prev.classList.remove('slide--active');
+      pauseSlideMedia(prev);
       i = (n + slides.length) % slides.length;
       slides[i].classList.add('slide--active');
       if (counter) counter.textContent = String(i + 1);

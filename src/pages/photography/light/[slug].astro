@@ -2,7 +2,6 @@
 import { getCollection } from 'astro:content';
 import Base from '../../../layouts/Base.astro';
 import Slideshow from '../../../components/Slideshow.astro';
-import VideoPlate from '../../../components/VideoPlate.astro';
 import { seriesSchema } from '../../../lib/schema.js';
 
 export async function getStaticPaths() {
@@ -30,16 +29,8 @@ const jsonLd = seriesSchema({ ...data, slug: entry.slug, category: 'abstract' })
   <article class="series">
     <div class="series__prose"><Content /></div>
 
-    {data.videos && data.videos.length > 0 && (
-      <div class="series__videos">
-        {data.videos.map((video, i) => (
-          <VideoPlate video={video} index={i} />
-        ))}
-      </div>
-    )}
-
     <div class="series__slideshow">
-      <Slideshow images={data.images} />
+      <Slideshow images={data.images} videos={data.videos} />
     </div>
     <nav class="series__after">
       <a href="/photography/light">← All Light work</a>
@@ -60,12 +51,5 @@ const jsonLd = seriesSchema({ ...data, slug: entry.slug, category: 'abstract' })
   .series__prose :global(p:empty) { display: none; }
   .series__prose :global(a) { border-bottom: 1px solid var(--rule); }
   .series__slideshow { flex: 1; min-height: 0; }
-  .series__videos {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: clamp(1.5rem, 3vw, 2.5rem);
-    justify-items: center;
-    margin-bottom: 0.75rem;
-  }
   .series__after { display: none; }
 </style>
