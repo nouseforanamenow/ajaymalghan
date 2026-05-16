@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import Base from '../../../layouts/Base.astro';
 import Slideshow from '../../../components/Slideshow.astro';
-import { seriesSchema } from '../../../lib/schema.js';
+import { seriesSchema, visualArtworkSchema } from '../../../lib/schema.js';
 
 export async function getStaticPaths() {
   const entries = await getCollection('documentary', ({ data }) => !data.draft);
@@ -14,16 +14,18 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await entry.render();
-const data = entry.data;
-const jsonLd = seriesSchema({ ...data, slug: entry.slug, category: 'documentary' });
+const data = { ...entry.data, category: 'documentary' };
+const schemas = [
+  visualArtworkSchema(data, entry.slug),
+  seriesSchema({ ...data, slug: entry.slug }),
+];
 ---
 
 <Base
   title={data.title}
   description={data.description}
-  keywords={data.keywords}
   ogImage={data.cover}
-  schema={jsonLd}
+  schema={schemas}
   pieceTitle={data.title}
 >
   <article class="series">
