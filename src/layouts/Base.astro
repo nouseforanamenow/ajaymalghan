@@ -6,9 +6,8 @@ import { artistSchema } from '../lib/schema.js';
 
 const {
   title = 'Ajay Malghan',
-  description = 'Ajay Malghan is an artist working in cameraless and chromaskedasic photography, abstract and documentary image-making, and painting.',
-  ogImage = '/og-default.svg',
-  keywords = [],
+  description = 'Ajay Malghan is an artist working in cameraless and chromaskedasic photography, abstract and documentary image-making, film, and painting. Based in Rockville, Maryland.',
+  ogImage = '/og-default.jpg',
   schema = null,
   noindex = false,
   pieceTitle = '',
@@ -16,15 +15,12 @@ const {
 
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 const fullTitle = title === 'Ajay Malghan' ? title : `${title} — Ajay Malghan`;
-const allKeywords = [
-  'Ajay Malghan',
-  'cameraless photography',
-  'chromaskedasic',
-  'abstract photography',
-  'documentary photography',
-  'painting',
-  ...keywords,
-].join(', ');
+const ogImageUrl = new URL(ogImage, Astro.site).toString();
+
+// `schema` may be a single object or an array. Always emit artistSchema
+// as the first ld+json block so every page advertises the Person.
+const extraSchemas = schema == null ? [] : Array.isArray(schema) ? schema : [schema];
+const allSchemas = [artistSchema(), ...extraSchemas];
 ---
 
 <!DOCTYPE html>
@@ -34,22 +30,24 @@ const allKeywords = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
-    <meta name="keywords" content={allKeywords} />
     <meta name="author" content="Ajay Malghan" />
     {noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonical} />
 
-    <!-- Open Graph (used by Instagram, iMessage, Signal, Discord, etc.) -->
+    <!-- Open Graph (used by Facebook, LinkedIn, iMessage, Slack, X, Discord, etc.) -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={new URL(ogImage, Astro.site).toString()} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:site_name" content="Ajay Malghan" />
 
     <!-- Schema.org JSON-LD -->
-    <script type="application/ld+json" set:html={JSON.stringify(artistSchema())} />
-    {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+    {allSchemas.map((s) => (
+      <script type="application/ld+json" set:html={JSON.stringify(s)} />
+    ))}
 
     <!-- Performance hints -->
     <link rel="preconnect" href="https://images.ajaymalghan.com" crossorigin />
