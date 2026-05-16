@@ -1,6 +1,7 @@
 {
   "redirects": [
     { "source": "/atom-city",                    "destination": "/photography/cameraless/atom-city",            "permanent": true },
+    { "source": "/atom-city/",                   "destination": "/photography/cameraless/atom-city",            "permanent": true },
     { "source": "/atomcity",                     "destination": "/photography/cameraless/atom-city",            "permanent": true },
     { "source": "/bleached-1",                   "destination": "/photography/cameraless/bleached",             "permanent": true },
     { "source": "/naturally-modified",           "destination": "/photography/cameraless/naturally-modified",   "permanent": true },
@@ -16,6 +17,7 @@
     { "source": "/counterfeitsky",               "destination": "/", "permanent": true },
     { "source": "/i-woke-up-in-a-strange-place", "destination": "/", "permanent": true },
     { "source": "/motion",                       "destination": "/", "permanent": true },
+    { "source": "/motion/",                      "destination": "/", "permanent": true },
     { "source": "/suttur-school",                "destination": "/", "permanent": true },
     { "source": "/scenes-from-a-moving-vehicle", "destination": "/", "permanent": true },
     { "source": "/work1",                        "destination": "/", "permanent": true },
