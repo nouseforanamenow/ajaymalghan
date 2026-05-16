@@ -48,6 +48,15 @@ import Base from '../../layouts/Base.astro';
       <span class="about__contact-label">Contact</span>
       <a href="mailto:ajaymalghan@gmail.com" class="about__email">ajaymalghan@gmail.com</a>
     </div>
+
+    <figure class="about__portrait">
+      <img
+        src="/images/about/studio.jpg"
+        alt="Ajay Malghan in his studio"
+        loading="lazy"
+        decoding="async"
+      />
+    </figure>
   </section>
 </Base>
 
@@ -87,4 +96,13 @@ import Base from '../../layouts/Base.astro';
     transition: border-color 0.2s ease;
   }
   .about__email:hover { border-color: var(--ink); }
+  .about__portrait {
+    margin: clamp(3rem, 6vw, 5rem) 0 0;
+    line-height: 0;
+  }
+  .about__portrait img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
 </style>

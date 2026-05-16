@@ -1,20 +1,34 @@
 ---
 const { video, index } = Astro.props;
-const aspectRatio = video.aspectRatio || '9/16';
+const aspectRatio = video.aspectRatio || (video.vimeo ? '16/9' : '9/16');
+const vimeoSrc = video.vimeo
+  ? `https://player.vimeo.com/video/${video.vimeo}?title=0&byline=0&portrait=0&badge=0&autopause=0`
+  : null;
 ---
 
 <figure class="vid">
   <div class="vid__frame" style={`aspect-ratio: ${aspectRatio};`}>
-    <video
-      src={video.src}
-      poster={video.poster}
-      controls
-      playsinline
-      preload={index < 1 ? 'metadata' : 'none'}
-      aria-label={video.alt}
-    >
-      Your browser does not support the video tag. <a href={video.src}>Download the video</a>.
-    </video>
+    {vimeoSrc ? (
+      <iframe
+        src={vimeoSrc}
+        title={video.title || video.alt}
+        frameborder="0"
+        allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        loading={index < 1 ? 'eager' : 'lazy'}
+      ></iframe>
+    ) : (
+      <video
+        src={video.src}
+        poster={video.poster}
+        controls
+        playsinline
+        preload={index < 1 ? 'metadata' : 'none'}
+        aria-label={video.alt}
+      >
+        Your browser does not support the video tag. <a href={video.src}>Download the video</a>.
+      </video>
+    )}
   </div>
   <figcaption class="vid__caption">
     {video.title && <span class="vid__title">{video.title}</span>}
@@ -36,8 +50,10 @@ const aspectRatio = video.aspectRatio || '9/16';
     overflow: hidden;
     width: 100%;
   }
-  .vid__frame video {
+  .vid__frame video,
+  .vid__frame iframe {
     width: 100%; height: 100%; display: block;
+    border: 0;
     object-fit: cover;
   }
   .vid__caption {

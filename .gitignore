@@ -24,3 +24,5 @@ pnpm-debug.log*
 
 # vercel
 .vercel
+public/images/time-video/*.mp4
+public/images/time-video/*.mp4

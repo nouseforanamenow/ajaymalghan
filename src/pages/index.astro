@@ -1,7 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
 
-const featured = { href: '/photography/cameraless/atom-city', title: 'Atom City', cls: 'ph-1' };
+const featured = {
+  href: '/photography/cameraless/urantia',
+  title: 'Urantia',
+  src: '/images/urantia/13.jpg',
+};
 ---
 
 <Base
@@ -10,7 +14,7 @@ const featured = { href: '/photography/cameraless/atom-city', title: 'Atom City'
 >
   <section class="home">
     <a class="hero" href={featured.href} aria-label={featured.title}>
-      <div class={`tile ${featured.cls}`}></div>
+      <img class="tile" src={featured.src} alt={featured.title} />
     </a>
   </section>
 </Base>
@@ -26,20 +30,13 @@ const featured = { href: '/photography/cameraless/atom-city', title: 'Atom City'
 
   .tile {
     aspect-ratio: 4 / 5;
+    width: 100%;
+    object-fit: cover;
     background: var(--paper-rise);
     overflow: hidden;
     transition: opacity 0.4s ease;
+    display: block;
   }
 
   .hero:hover .tile { opacity: 0.9; }
-
-  .ph-1 { background: linear-gradient(135deg, #d4c4a8, #9a8568); }
-  .ph-2 { background: linear-gradient(135deg, #e8e2d4, #a89c8a 60%, #4a4238); }
-  .ph-3 { background: radial-gradient(circle at 40% 30%, #d8d0c0, #8a8275); }
-  .ph-4 { background: linear-gradient(180deg, #c4b8a8, #6a5a4a 60%, #2a2520); }
-  .ph-5 { background: linear-gradient(0deg, #b0a8a0, #d4ccc4); }
-  .ph-6 { background: linear-gradient(150deg, #5a5856, #8a8782 60%, #c0bdb8); }
-  .ph-7 { background: radial-gradient(circle at 70% 60%, #6a5a4a, #2a2520); }
-  .ph-8 { background: linear-gradient(135deg, #c8b8a8, #8a7868 60%, #4a3828); }
-
 </style>
