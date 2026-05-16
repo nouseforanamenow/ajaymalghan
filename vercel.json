@@ -1,0 +1,31 @@
+{
+  "redirects": [
+    { "source": "/atom-city",                    "destination": "/photography/cameraless/atom-city",            "permanent": true },
+    { "source": "/atomcity",                     "destination": "/photography/cameraless/atom-city",            "permanent": true },
+    { "source": "/bleached-1",                   "destination": "/photography/cameraless/bleached",             "permanent": true },
+    { "source": "/naturally-modified",           "destination": "/photography/cameraless/naturally-modified",   "permanent": true },
+    { "source": "/collaborations-with-nature",   "destination": "/photography/film/collaborations-with-nature", "permanent": true },
+    { "source": "/hong-kong-alleys",             "destination": "/photography/film/hk-alleys",                  "permanent": true },
+    { "source": "/people-and-places",            "destination": "/photography/film/people-and-places",          "permanent": true },
+    { "source": "/vertical-density",             "destination": "/photography/film/vertical-density",           "permanent": true },
+    { "source": "/passing-through",              "destination": "/photography/light/passing-through",           "permanent": true },
+    { "source": "/12-days",                      "destination": "/painting/12-days",                            "permanent": true },
+    { "source": "/everything",                   "destination": "/painting/everything-in-its-right-place",      "permanent": true },
+
+    { "source": "/coping-mechanisms",            "destination": "/", "permanent": true },
+    { "source": "/counterfeitsky",               "destination": "/", "permanent": true },
+    { "source": "/i-woke-up-in-a-strange-place", "destination": "/", "permanent": true },
+    { "source": "/motion",                       "destination": "/", "permanent": true },
+    { "source": "/suttur-school",                "destination": "/", "permanent": true },
+    { "source": "/scenes-from-a-moving-vehicle", "destination": "/", "permanent": true },
+    { "source": "/work1",                        "destination": "/", "permanent": true },
+    { "source": "/portfolio",                    "destination": "/", "permanent": true },
+
+    { "source": "/archives/:path*",              "destination": "/", "permanent": true },
+    { "source": "/feed",                         "destination": "/", "permanent": true },
+    { "source": "/comments/feed",                "destination": "/", "permanent": true },
+    { "source": "/favicon.ico/",                 "destination": "/favicon.ico", "permanent": true },
+
+    { "source": "/sitemap.xml",                  "destination": "/sitemap-index.xml", "permanent": true }
+  ]
+}
