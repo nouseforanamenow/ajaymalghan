@@ -122,9 +122,11 @@ const total = slides.length;
   }
 
   .slide__video-frame {
-    width: min(90%, calc((90vh - 8rem)));
-    max-width: 90%;
-    max-height: 90%;
+    /* fill the slide height, computing width from aspect-ratio
+       (set inline on the element); clamp width if it would overflow */
+    height: 100%;
+    width: auto;
+    max-width: 100%;
     background: var(--paper-rise);
     position: relative;
     overflow: hidden;
@@ -179,10 +181,11 @@ const total = slides.length;
   }
   .slideshow__zone:focus { outline: none; }
 
-  /* When a video slide is active, shrink the click zones so the player
-     controls (play, scrubber, fullscreen) are reachable in the center. */
+  /* When a video slide is active, drop the click zones entirely so the
+     Vimeo player's play button and scrubber are clickable. Navigation
+     still works via the footer arrows, keyboard, and touch swipe. */
   .slideshow--video .slideshow__zone {
-    width: 48px;
+    pointer-events: none;
   }
 
 </style>
