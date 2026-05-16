@@ -179,6 +179,12 @@ const total = slides.length;
   }
   .slideshow__zone:focus { outline: none; }
 
+  /* When a video slide is active, shrink the click zones so the player
+     controls (play, scrubber, fullscreen) are reachable in the center. */
+  .slideshow--video .slideshow__zone {
+    width: 48px;
+  }
+
 </style>
 
 <script>
@@ -197,6 +203,11 @@ const total = slides.length;
       slide.querySelectorAll('video').forEach((v) => { try { v.pause(); } catch {} });
     };
 
+    const syncMode = () => {
+      const kind = slides[i].dataset.kind;
+      s.classList.toggle('slideshow--video', kind === 'video');
+    };
+
     const go = (n) => {
       const prev = slides[i];
       prev.classList.remove('slide--active');
@@ -204,7 +215,10 @@ const total = slides.length;
       i = (n + slides.length) % slides.length;
       slides[i].classList.add('slide--active');
       if (counter) counter.textContent = String(i + 1);
+      syncMode();
     };
+
+    syncMode();
 
     // Controls live in the footer (data-slideshow-prev / -next). Hook at document level.
     document.querySelectorAll('[data-slideshow-prev]').forEach((btn) =>
