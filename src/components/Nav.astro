@@ -1,4 +1,27 @@
 ---
+import { getCollection } from 'astro:content';
+
+const sortFn = (a, b) =>
+  ((a.data.order ?? 999) - (b.data.order ?? 999)) ||
+  ((b.data.year || '').localeCompare(a.data.year || ''));
+
+const fetch = async (name) =>
+  (await getCollection(name, ({ data }) => !data.draft)).sort(sortFn);
+
+const [light, cameraless, film, documentary, painting] = await Promise.all([
+  fetch('light'),
+  fetch('cameraless'),
+  fetch('film'),
+  fetch('documentary'),
+  fetch('painting'),
+]);
+
+const photoCols = [
+  { slug: 'light', label: 'Light', items: light },
+  { slug: 'cameraless', label: 'Cameraless', items: cameraless },
+  { slug: 'film', label: 'Film', items: film },
+  { slug: 'documentary', label: 'Documentary', items: documentary },
+];
 ---
 
 <header class="nav">
@@ -10,41 +33,16 @@
       <li class="menu__item has-sub">
         <a href="/photography">Photography</a>
         <div class="submenu">
-          <div class="submenu__col">
-            <a href="/photography/light" class="submenu__label">Light</a>
-            <ul>
-              <li><a href="/photography/light/time">Time</a></li>
-              <li><a href="/photography/light/time-video">Time / Video</a></li>
-              <li><a href="/photography/light/passing-through">Passing Through</a></li>
-            </ul>
-          </div>
-          <div class="submenu__col">
-            <a href="/photography/cameraless" class="submenu__label">Cameraless</a>
-            <ul>
-              <li><a href="/photography/cameraless/atom-city">Atom City</a></li>
-              <li><a href="/photography/cameraless/urantia">Urantia</a></li>
-              <li><a href="/photography/cameraless/matter">Matter</a></li>
-              <li><a href="/photography/cameraless/naturally-modified">Naturally Modified</a></li>
-              <li><a href="/photography/cameraless/bleached">Bleached</a></li>
-            </ul>
-          </div>
-          <div class="submenu__col">
-            <a href="/photography/film" class="submenu__label">Film</a>
-            <ul>
-              <li><a href="/photography/film/people-and-places">People and Places</a></li>
-              <li><a href="/photography/film/vertical-density">Vertical Density</a></li>
-              <li><a href="/photography/film/hk-alleys">HK Alleys</a></li>
-              <li><a href="/photography/film/space-and-time">Space and Time</a></li>
-              <li><a href="/photography/film/collaborations-with-nature">Collaborations With Nature</a></li>
-            </ul>
-          </div>
-          <div class="submenu__col">
-            <a href="/photography/documentary" class="submenu__label">Documentary</a>
-            <ul>
-              <li><a href="/photography/documentary/underground-railroad">Underground Railroad</a></li>
-              <li><a href="/photography/documentary/richmond-slave-trail">Richmond Slave Trail</a></li>
-            </ul>
-          </div>
+          {photoCols.map((col) => (
+            <div class="submenu__col">
+              <a href={`/photography/${col.slug}`} class="submenu__label">{col.label}</a>
+              <ul>
+                {col.items.map((s) => (
+                  <li><a href={`/photography/${col.slug}/${s.slug}`}>{s.data.title}</a></li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </li>
       <li class="menu__item has-sub">
@@ -52,11 +50,9 @@
         <div class="submenu submenu--single">
           <div class="submenu__col">
             <ul>
-              <li><a href="/painting/12-days">12 Days</a></li>
-              <li><a href="/painting/cant-remember">Can't Remember What I Was Trying to Forget</a></li>
-              <li><a href="/painting/kevin">Kevin</a></li>
-              <li><a href="/painting/death-is-what-you-make-of-it">Death is What You Make of It</a></li>
-              <li><a href="/painting/everything-in-its-right-place">Everything in its Right Place</a></li>
+              {painting.map((s) => (
+                <li><a href={`/painting/${s.slug}`}>{s.data.title}</a></li>
+              ))}
             </ul>
           </div>
         </div>
