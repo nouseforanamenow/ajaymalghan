@@ -63,7 +63,10 @@ const photoCols = [
   </nav>
 
   <button class="nav__toggle" aria-label="Open menu" aria-expanded="false">
-    <span></span><span></span><span></span>
+    <span class="nav__toggle-label">Menu</span>
+    <span class="nav__toggle-bars">
+      <span></span><span></span><span></span>
+    </span>
   </button>
 </header>
 
@@ -134,17 +137,24 @@ const photoCols = [
   .submenu a:hover { color: var(--ink-dim); }
   .nav__toggle {
     display: none; background: transparent; border: 0;
-    width: 44px; height: 44px; cursor: pointer; padding: 0;
-    flex-direction: column; justify-content: center; align-items: center;
-    gap: 6px;
+    cursor: pointer; padding: 0.5rem 0;
+    align-items: center; gap: 0.6rem;
+    color: var(--ink);
+    font-family: var(--font-body); font-size: var(--t-2);
   }
-  .nav__toggle span {
-    height: 2px; width: 24px; background: var(--ink);
+  .nav__toggle-label { letter-spacing: 0.02em; }
+  .nav__toggle-bars {
+    display: inline-flex; flex-direction: column;
+    width: 22px; gap: 5px;
+  }
+  .nav__toggle-bars span {
+    height: 2px; width: 22px; background: var(--ink);
     border-radius: 1px; transition: transform 0.2s ease, opacity 0.2s ease;
+    display: block;
   }
-  .nav__toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-  .nav__toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
-  .nav__toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+  .nav__toggle[aria-expanded="true"] .nav__toggle-bars span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav__toggle[aria-expanded="true"] .nav__toggle-bars span:nth-child(2) { opacity: 0; }
+  .nav__toggle[aria-expanded="true"] .nav__toggle-bars span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
   .menu__item--mobile-only { display: none; }
   @media (max-width: 1100px) {
     .submenu { grid-template-columns: repeat(2, max-content); min-width: 460px; }
@@ -164,7 +174,7 @@ const photoCols = [
       grid-template-columns: 1fr; gap: 1.25rem; margin-top: 0.75rem;
       padding: 1rem; min-width: 0; box-shadow: none;
     }
-    .nav__toggle { display: flex; }
+    .nav__toggle { display: inline-flex; }
     .menu__item--mobile-only { display: block; }
   }
 </style>
