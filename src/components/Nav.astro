@@ -27,6 +27,8 @@ const photoCols = [
 <header class="nav">
   <a href="/" class="nav__brand">Ajay Malghan</a>
 
+  <input type="checkbox" id="nav-toggle-check" class="nav__check" aria-hidden="true" />
+
   <nav class="nav__primary" aria-label="Primary">
     <ul class="menu">
       <li class="menu__item menu__item--mobile-only"><a href="/">Home</a></li>
@@ -62,12 +64,13 @@ const photoCols = [
     </ul>
   </nav>
 
-  <button class="nav__toggle" aria-label="Open menu" aria-expanded="false">
-    <span class="nav__toggle-label">Menu</span>
+  <label for="nav-toggle-check" class="nav__toggle" aria-label="Open menu">
+    <span class="nav__toggle-label nav__toggle-label--open">Menu</span>
+    <span class="nav__toggle-label nav__toggle-label--close">Close</span>
     <span class="nav__toggle-bars">
       <span></span><span></span><span></span>
     </span>
-  </button>
+  </label>
 </header>
 
 <style>
@@ -135,17 +138,23 @@ const photoCols = [
     white-space: nowrap;
   }
   .submenu a:hover { color: var(--ink-dim); }
+  .nav__check {
+    position: absolute; opacity: 0; pointer-events: none;
+    width: 1px; height: 1px; left: -9999px;
+  }
   .nav__toggle {
     display: none; background: transparent; border: 0;
     cursor: pointer; padding: 0.75rem 0.25rem;
     align-items: center; gap: 0.6rem;
     color: var(--ink);
     font-family: var(--font-body); font-size: var(--t-2);
-    -webkit-tap-highlight-color: rgba(0,0,0,0.1);
+    -webkit-tap-highlight-color: rgba(0,0,0,0.15);
     touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
   }
-  .nav__toggle * { pointer-events: none; }
   .nav__toggle-label { letter-spacing: 0.02em; }
+  .nav__toggle-label--close { display: none; }
   .nav__toggle-bars {
     display: inline-flex; flex-direction: column;
     width: 22px; gap: 5px;
@@ -155,9 +164,12 @@ const photoCols = [
     border-radius: 1px; transition: transform 0.2s ease, opacity 0.2s ease;
     display: block;
   }
-  .nav__toggle[aria-expanded="true"] .nav__toggle-bars span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-  .nav__toggle[aria-expanded="true"] .nav__toggle-bars span:nth-child(2) { opacity: 0; }
-  .nav__toggle[aria-expanded="true"] .nav__toggle-bars span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  /* Open state via :checked */
+  .nav__check:checked ~ .nav__toggle .nav__toggle-label--open { display: none; }
+  .nav__check:checked ~ .nav__toggle .nav__toggle-label--close { display: inline; }
+  .nav__check:checked ~ .nav__toggle .nav__toggle-bars span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav__check:checked ~ .nav__toggle .nav__toggle-bars span:nth-child(2) { opacity: 0; }
+  .nav__check:checked ~ .nav__toggle .nav__toggle-bars span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
   .menu__item--mobile-only { display: none; }
   @media (max-width: 1100px) {
     .submenu { grid-template-columns: repeat(2, max-content); min-width: 460px; }
@@ -175,7 +187,7 @@ const photoCols = [
       z-index: 100;
       -webkit-overflow-scrolling: touch;
     }
-    .nav__primary.open { display: block; }
+    .nav__check:checked ~ .nav__primary { display: block; }
     .menu { display: flex; flex-direction: column; gap: 1.1rem; }
     .submenu, .submenu--single {
       position: static; transform: none; opacity: 1; pointer-events: auto;
@@ -193,41 +205,17 @@ const photoCols = [
     .menu__item--mobile-only { display: block; }
     .nav { padding: 1rem var(--page-x); }
     /* When menu is open, lock body scroll */
-    body:has(.nav__primary.open) { overflow: hidden; }
+    body:has(.nav__check:checked) { overflow: hidden; }
   }
 </style>
 
 <script>
-  function wireNav() {
-    const toggle = document.querySelector('.nav__toggle');
-    const primary = document.querySelector('.nav__primary');
-    if (!toggle || !primary) return;
-    if (toggle.dataset.wired) return;
-    toggle.dataset.wired = '1';
-
-    const setOpen = (open) => {
-      primary.classList.toggle('open', open);
-      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-      document.documentElement.style.overflow = open ? 'hidden' : '';
-    };
-
-    toggle.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setOpen(!primary.classList.contains('open'));
-    });
-
-    primary.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', () => setOpen(false));
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') setOpen(false);
-    });
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', wireNav);
-  } else {
-    wireNav();
-  }
+  // CSS-only checkbox toggle drives open/close. JS only closes the menu
+  // when a link is tapped (so navigation to the new page starts fresh).
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('.nav__primary a');
+    if (!link) return;
+    const check = document.getElementById('nav-toggle-check');
+    if (check && check.checked) check.checked = false;
+  });
 </script>
