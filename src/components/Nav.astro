@@ -137,11 +137,14 @@ const photoCols = [
   .submenu a:hover { color: var(--ink-dim); }
   .nav__toggle {
     display: none; background: transparent; border: 0;
-    cursor: pointer; padding: 0.5rem 0;
+    cursor: pointer; padding: 0.75rem 0.25rem;
     align-items: center; gap: 0.6rem;
     color: var(--ink);
     font-family: var(--font-body); font-size: var(--t-2);
+    -webkit-tap-highlight-color: rgba(0,0,0,0.1);
+    touch-action: manipulation;
   }
+  .nav__toggle * { pointer-events: none; }
   .nav__toggle-label { letter-spacing: 0.02em; }
   .nav__toggle-bars {
     display: inline-flex; flex-direction: column;
@@ -195,16 +198,36 @@ const photoCols = [
 </style>
 
 <script>
-  const toggle = document.querySelector('.nav__toggle');
-  const primary = document.querySelector('.nav__primary');
-  toggle?.addEventListener('click', () => {
-    const open = primary?.classList.toggle('open');
-    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-  });
-  primary?.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', () => {
-      primary.classList.remove('open');
-      toggle?.setAttribute('aria-expanded', 'false');
+  function wireNav() {
+    const toggle = document.querySelector('.nav__toggle');
+    const primary = document.querySelector('.nav__primary');
+    if (!toggle || !primary) return;
+    if (toggle.dataset.wired) return;
+    toggle.dataset.wired = '1';
+
+    const setOpen = (open) => {
+      primary.classList.toggle('open', open);
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      document.documentElement.style.overflow = open ? 'hidden' : '';
+    };
+
+    toggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setOpen(!primary.classList.contains('open'));
     });
-  });
+
+    primary.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => setOpen(false));
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') setOpen(false);
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', wireNav);
+  } else {
+    wireNav();
+  }
 </script>
