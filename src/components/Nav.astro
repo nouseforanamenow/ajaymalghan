@@ -5,15 +5,15 @@ const sortFn = (a, b) =>
   ((a.data.order ?? 999) - (b.data.order ?? 999)) ||
   ((b.data.year || '').localeCompare(a.data.year || ''));
 
-const fetch = async (name) =>
+const fetchSorted = async (name) =>
   (await getCollection(name, ({ data }) => !data.draft)).sort(sortFn);
 
 const [light, cameraless, film, documentary, painting] = await Promise.all([
-  fetch('light'),
-  fetch('cameraless'),
-  fetch('film'),
-  fetch('documentary'),
-  fetch('painting'),
+  fetchSorted('light'),
+  fetchSorted('cameraless'),
+  fetchSorted('film'),
+  fetchSorted('documentary'),
+  fetchSorted('painting'),
 ]);
 
 const photoCols = [
@@ -27,11 +27,9 @@ const photoCols = [
 <header class="nav">
   <a href="/" class="nav__brand">Ajay Malghan</a>
 
-  <input type="checkbox" id="nav-toggle-check" class="nav__check" aria-hidden="true" />
-
-  <nav class="nav__primary" aria-label="Primary">
+  {/* DESKTOP NAV — visible on wide screens only */}
+  <nav class="nav__desktop" aria-label="Primary">
     <ul class="menu">
-      <li class="menu__item menu__item--mobile-only"><a href="/">Home</a></li>
       <li class="menu__item has-sub">
         <a href="/photography">Photography</a>
         <div class="submenu">
@@ -64,30 +62,57 @@ const photoCols = [
     </ul>
   </nav>
 
-  <label for="nav-toggle-check" class="nav__toggle" aria-label="Open menu">
-    <span class="nav__toggle-label nav__toggle-label--open">Menu</span>
-    <span class="nav__toggle-label nav__toggle-label--close">Close</span>
-    <span class="nav__toggle-bars">
-      <span></span><span></span><span></span>
-    </span>
-  </label>
+  {/* MOBILE NAV — native <details>/<summary> dropdown */}
+  <details class="nav__mobile">
+    <summary class="nav__mobile-summary">
+      <span class="nav__mobile-summary-text">Menu</span>
+      <span class="nav__mobile-summary-chev" aria-hidden="true">▾</span>
+    </summary>
+    <div class="nav__mobile-panel">
+      <ul class="nav__mobile-list">
+        <li><a href="/">Home</a></li>
+        <li class="nav__mobile-section">Photography</li>
+        {photoCols.map((col) => (
+          <>
+            <li class="nav__mobile-sub-section"><a href={`/photography/${col.slug}`}>{col.label}</a></li>
+            {col.items.map((s) => (
+              <li class="nav__mobile-leaf"><a href={`/photography/${col.slug}/${s.slug}`}>{s.data.title}</a></li>
+            ))}
+          </>
+        ))}
+        <li class="nav__mobile-section"><a href="/painting">Painting</a></li>
+        {painting.map((s) => (
+          <li class="nav__mobile-leaf"><a href={`/painting/${s.slug}`}>{s.data.title}</a></li>
+        ))}
+        <li class="nav__mobile-section"><a href="/music">Music</a></li>
+        <li class="nav__mobile-section"><a href="/about">About</a></li>
+      </ul>
+    </div>
+  </details>
 </header>
 
 <style>
   .nav {
     position: sticky; top: 0; z-index: 50;
     display: flex; align-items: center; justify-content: space-between;
-    padding: 1.5rem var(--page-x) 1.25rem;
-    background: rgba(255,255,255,0.95);
+    padding: 1.25rem var(--page-x);
+    background: rgba(255,255,255,0.97);
     backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--rule);
+    gap: 1rem;
   }
   .nav__brand {
     font-family: var(--font-body);
     font-size: var(--t-3);
     color: var(--ink);
     letter-spacing: 0.01em;
+    flex-shrink: 0;
   }
+
+  /* ============ DESKTOP NAV ============ */
+  .nav__desktop { display: block; }
+  .nav__mobile { display: none; }
+
   .menu { display: flex; gap: clamp(1.5rem, 3vw, 2.25rem); list-style: none; }
   .menu__item > a {
     font-family: var(--font-body);
@@ -138,84 +163,105 @@ const photoCols = [
     white-space: nowrap;
   }
   .submenu a:hover { color: var(--ink-dim); }
-  .nav__check {
-    position: absolute; opacity: 0; pointer-events: none;
-    width: 1px; height: 1px; left: -9999px;
-  }
-  .nav__toggle {
-    display: none; background: transparent; border: 0;
-    cursor: pointer; padding: 0.75rem 0.25rem;
-    align-items: center; gap: 0.6rem;
-    color: var(--ink);
-    font-family: var(--font-body); font-size: var(--t-2);
-    -webkit-tap-highlight-color: rgba(0,0,0,0.15);
-    touch-action: manipulation;
-    user-select: none;
-    -webkit-user-select: none;
-  }
-  .nav__toggle-label { letter-spacing: 0.02em; }
-  .nav__toggle-label--close { display: none; }
-  .nav__toggle-bars {
-    display: inline-flex; flex-direction: column;
-    width: 22px; gap: 5px;
-  }
-  .nav__toggle-bars span {
-    height: 2px; width: 22px; background: var(--ink);
-    border-radius: 1px; transition: transform 0.2s ease, opacity 0.2s ease;
-    display: block;
-  }
-  /* Open state via :checked */
-  .nav__check:checked ~ .nav__toggle .nav__toggle-label--open { display: none; }
-  .nav__check:checked ~ .nav__toggle .nav__toggle-label--close { display: inline; }
-  .nav__check:checked ~ .nav__toggle .nav__toggle-bars span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-  .nav__check:checked ~ .nav__toggle .nav__toggle-bars span:nth-child(2) { opacity: 0; }
-  .nav__check:checked ~ .nav__toggle .nav__toggle-bars span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-  .menu__item--mobile-only { display: none; }
+
   @media (max-width: 1100px) {
     .submenu { grid-template-columns: repeat(2, max-content); min-width: 460px; }
   }
+
+  /* ============ MOBILE NAV ============ */
   @media (max-width: 880px) {
-    /* Mobile: header is one row, hamburger always visible.
-       Open menu = full-screen overlay above everything (z-index > footer). */
-    .nav__primary {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: var(--paper);
-      padding: 4.5rem var(--page-x) 3rem;
-      overflow-y: auto;
-      z-index: 100;
-      -webkit-overflow-scrolling: touch;
-    }
-    .nav__check:checked ~ .nav__primary { display: block; }
-    .menu { display: flex; flex-direction: column; gap: 1.1rem; }
-    .submenu, .submenu--single {
-      position: static; transform: none; opacity: 1; pointer-events: auto;
-      grid-template-columns: 1fr; gap: 1rem; margin-top: 0.5rem;
-      padding: 0.5rem 0 0 0.75rem; min-width: 0; box-shadow: none;
-      border: 0;
-      display: block;
-    }
-    .submenu__col { margin-bottom: 0.5rem; }
-    .nav__toggle {
-      display: inline-flex;
-      position: relative;
-      z-index: 101;
-    }
-    .menu__item--mobile-only { display: block; }
-    .nav { padding: 1rem var(--page-x); }
-    /* When menu is open, lock body scroll */
-    body:has(.nav__check:checked) { overflow: hidden; }
+    .nav__desktop { display: none; }
+    .nav__mobile { display: block; }
+    .nav { padding: 0.9rem var(--page-x); }
   }
+
+  .nav__mobile-summary {
+    list-style: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 0.25rem;
+    font-family: var(--font-body);
+    font-size: var(--t-2);
+    color: var(--ink);
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0.08);
+    touch-action: manipulation;
+  }
+  .nav__mobile-summary::-webkit-details-marker { display: none; }
+  .nav__mobile-summary-chev {
+    display: inline-block;
+    font-size: 0.85em;
+    transition: transform 0.2s ease;
+    color: var(--ink-dim);
+  }
+  .nav__mobile[open] .nav__mobile-summary-chev { transform: rotate(180deg); }
+
+  .nav__mobile-panel {
+    position: absolute;
+    top: 100%; left: 0; right: 0;
+    background: var(--paper);
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    max-height: calc(100svh - 60px - 3.75rem);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.06);
+  }
+  .nav__mobile-list {
+    list-style: none;
+    margin: 0;
+    padding: 0.5rem var(--page-x) 1.25rem;
+    display: grid;
+    gap: 0.1rem;
+  }
+  .nav__mobile-list li { padding: 0; margin: 0; }
+  .nav__mobile-list a {
+    display: block;
+    padding: 0.75rem 0;
+    font-family: var(--font-body);
+    font-size: var(--t-2);
+    color: var(--ink);
+    border-bottom: 1px solid transparent;
+  }
+  .nav__mobile-section {
+    margin-top: 1rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--rule);
+    font-family: var(--font-body);
+    font-size: var(--t-1);
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .nav__mobile-section:first-of-type { margin-top: 0; border-top: 0; padding-top: 0; }
+  .nav__mobile-section a { padding: 0.5rem 0 0; color: var(--ink); font-size: var(--t-2); text-transform: none; letter-spacing: 0; }
+  .nav__mobile-sub-section {
+    margin-top: 0.65rem;
+    font-family: var(--font-body);
+    font-size: var(--t-1);
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .nav__mobile-sub-section a {
+    padding: 0.35rem 0;
+    color: var(--ink-faint);
+    font-size: var(--t-1);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .nav__mobile-leaf a { padding: 0.6rem 0 0.6rem 0.75rem; color: var(--ink); }
 </style>
 
 <script>
-  // CSS-only checkbox toggle drives open/close. JS only closes the menu
-  // when a link is tapped (so navigation to the new page starts fresh).
+  // Close the mobile menu when any link is tapped (so navigation goes through cleanly).
   document.addEventListener('click', (e) => {
-    const link = e.target.closest('.nav__primary a');
+    const link = e.target.closest('.nav__mobile a');
     if (!link) return;
-    const check = document.getElementById('nav-toggle-check');
-    if (check && check.checked) check.checked = false;
+    const mobile = document.querySelector('.nav__mobile');
+    if (mobile && mobile.hasAttribute('open')) mobile.removeAttribute('open');
   });
 </script>
